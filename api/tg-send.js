@@ -21,17 +21,17 @@ export default async function handler(req, res) {
     if (!chat_id || !text) throw new Error('chat_id & text required');
 
     const tg = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-      method:'POST',
-      headers:{ 'Content-Type':'application/json' },
+      method: 'POST',
+      headers: { 'Content-Type':'application/json' },
       body: JSON.stringify({ chat_id, text, parse_mode, disable_web_page_preview, disable_notification })
     });
     const data = await tg.json();
 
     res.setHeader('Access-Control-Allow-Origin','*');
-    if (!tg.ok || !data.ok) return res.status(500).json({ ok:false, error:data?.description || 'Telegram failed', raw:data });
-    return res.status(200).json({ ok:true, result:data.result });
+    if (!tg.ok || !data.ok) return res.status(500).json({ ok:false, error: data?.description || 'Telegram failed', raw: data });
+    return res.status(200).json({ ok:true, result: data.result });
   } catch (e) {
     res.setHeader('Access-Control-Allow-Origin','*');
-    return res.status(500).json({ ok:false, error:String(e) });
+    return res.status(500).json({ ok:false, error: String(e) });
   }
 }
